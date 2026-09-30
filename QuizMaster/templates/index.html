@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaster – IBM Workshop Quiz Platform</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════  NAV BAR  ════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#" id="nav-logo">Quiz<span>Master</span></a>
+    <div class="nav-right">
+      <span id="nav-student-name" class="nav-student"></span>
+      <span class="nav-badge">IBM Workshop</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════  HOME PAGE  ══════════════════════════════ -->
+<section id="page-home" class="page active">
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="hero-eyebrow">IBM Workshop Project 2024</div>
+      <h1 class="hero-title">Quiz<span>Master</span></h1>
+      <p class="hero-sub">
+        Challenge yourself with questions on HTML, CSS, JavaScript,<br />
+        Python &amp; Computer Science fundamentals.
+      </p>
+
+      <div class="hero-stat-row">
+        <div class="h-stat">
+          <div class="h-stat-num">12</div>
+          <div class="h-stat-lbl">Questions</div>
+        </div>
+        <div class="h-stat-div"></div>
+        <div class="h-stat">
+          <div class="h-stat-num">30s</div>
+          <div class="h-stat-lbl">Per Question</div>
+        </div>
+        <div class="h-stat-div"></div>
+        <div class="h-stat">
+          <div class="h-stat-num">1 pt</div>
+          <div class="h-stat-lbl">Per Correct</div>
+        </div>
+      </div>
+
+      <div class="hero-btns">
+        <button class="btn btn-primary btn-xl" id="btn-start-home">
+          Start Quiz &nbsp;→
+        </button>
+      </div>
+    </div>
+    <div class="hero-illustration" aria-hidden="true">
+      <div class="illo-ring illo-ring-1"></div>
+      <div class="illo-ring illo-ring-2"></div>
+      <div class="illo-ring illo-ring-3"></div>
+      <div class="illo-icon">🎯</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  REGISTRATION  ═══════════════════════════ -->
+<section id="page-register" class="page">
+  <div class="center-wrap">
+    <div class="card reg-card">
+      <div class="card-header-band">
+        <span class="card-icon-lg">🎓</span>
+        <h2>Student Registration</h2>
+        <p>Enter your details to begin the quiz and save your score</p>
+      </div>
+      <div class="card-body">
+        <form id="form-register" novalidate autocomplete="on">
+          <div class="field-group">
+            <label for="inp-name">Full Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input id="inp-name" type="text" placeholder="e.g. Alice Johnson"
+                     autocomplete="name" required />
+            </div>
+            <span class="field-err" id="err-name"></span>
+          </div>
+          <div class="field-group">
+            <label for="inp-email">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉️</span>
+              <input id="inp-email" type="email" placeholder="e.g. alice@example.com"
+                     autocomplete="email" required />
+            </div>
+            <span class="field-err" id="err-email"></span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="btn-register">
+            <span id="btn-register-text">Continue to Quiz Selection →</span>
+          </button>
+          <p id="register-api-error" class="api-msg error"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  QUIZ SELECTION  ═════════════════════════ -->
+<section id="page-select" class="page">
+  <div class="page-container">
+    <div class="page-header">
+      <h2>Available Quizzes</h2>
+      <p id="select-welcome" class="page-sub"></p>
+    </div>
+    <div id="quiz-grid" class="quiz-grid"></div>
+    <p id="quiz-grid-error" class="api-msg error"></p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  QUIZ SCREEN  ════════════════════════════ -->
+<section id="page-quiz" class="page">
+  <div class="quiz-shell">
+
+    <!-- ── header strip ── -->
+    <div class="quiz-header">
+      <div class="qh-left">
+        <span id="qh-quiz-name" class="qh-quiz-name"></span>
+        <span id="qh-counter" class="qh-counter"></span>
+      </div>
+      <div class="qh-right">
+        <div class="live-score-box" title="Live score">
+          <span class="ls-label">Score</span>
+          <span id="live-score" class="ls-num">0</span>
+        </div>
+        <div class="timer-wrap">
+          <svg class="t-ring" viewBox="0 0 48 48">
+            <circle class="t-bg" cx="24" cy="24" r="20"/>
+            <circle class="t-fg" id="t-fg" cx="24" cy="24" r="20"/>
+          </svg>
+          <span id="t-num" class="t-num">30</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── progress ── -->
+    <div class="q-progress">
+      <div class="q-progress-fill" id="q-progress-fill"></div>
+    </div>
+
+    <!-- ── question card ── -->
+    <div class="q-card" id="q-card">
+      <p id="q-text" class="q-text"></p>
+      <ul id="q-options" class="q-options"></ul>
+    </div>
+
+    <!-- ── nav ── -->
+    <div class="q-nav">
+      <button class="btn btn-ghost" id="btn-skip">Skip Question</button>
+      <div class="q-nav-right">
+        <button class="btn btn-outline-primary" id="btn-next" disabled>Next →</button>
+        <button class="btn btn-submit" id="btn-submit" style="display:none">Submit Quiz ✓</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════  RESULTS PAGE  ═══════════════════════════ -->
+<section id="page-results" class="page">
+  <div class="results-shell">
+
+    <div class="results-trophy" id="results-trophy"></div>
+    <h2 id="results-title" class="results-title"></h2>
+    <p  id="results-feedback" class="results-feedback"></p>
+
+    <div class="score-cards">
+      <div class="sc-card">
+        <span id="rc-score" class="sc-big">0</span>
+        <span class="sc-lbl">Score</span>
+      </div>
+      <div class="sc-card">
+        <span id="rc-total" class="sc-big">0</span>
+        <span class="sc-lbl">Total</span>
+      </div>
+      <div class="sc-card sc-accent">
+        <span id="rc-pct" class="sc-big">0%</span>
+        <span class="sc-lbl">Percentage</span>
+      </div>
+      <div class="sc-card">
+        <span id="rc-correct" class="sc-big">0</span>
+        <span class="sc-lbl">Correct</span>
+      </div>
+    </div>
+
+    <div id="breakdown" class="breakdown"></div>
+
+    <div class="results-actions">
+      <button class="btn btn-outline-primary" id="btn-history">📋 My History</button>
+      <button class="btn btn-outline-primary" id="btn-restart">↩ Restart Quiz</button>
+      <button class="btn btn-primary" id="btn-new-quiz">Choose New Quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  HISTORY PAGE  ═══════════════════════════ -->
+<section id="page-history" class="page">
+  <div class="page-container">
+    <div class="page-header">
+      <h2>Your Quiz History</h2>
+      <p class="page-sub">All your past attempts at a glance</p>
+    </div>
+    <div id="history-wrap"></div>
+    <div class="history-actions">
+      <button class="btn btn-outline-primary" id="btn-back-from-history">← Back to Results</button>
+      <button class="btn btn-primary" id="btn-home-from-history">🏠 Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════  TOAST  ══════════════════════════════════ -->
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- ═══════════════════════════  FOOTER  ═════════════════════════════════ -->
+<footer class="site-footer">
+  <p>QuizMaster &mdash; IBM Workshop 2024 &nbsp;|&nbsp; Built with Flask &amp; SQLite</p>
+</footer>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
