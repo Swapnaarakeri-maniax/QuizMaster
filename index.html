@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizMaster – Quiz Platform</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════  HERO / HOME  ═══════════════════════════ -->
+<section id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge">IBM Workshop Project</div>
+    <h1 class="hero-title">Quiz<span>Master</span></h1>
+    <p class="hero-subtitle">Test your skills in HTML, CSS, JavaScript, Python &amp; more</p>
+    <div class="hero-stats">
+      <div class="stat"><span id="stat-questions">12</span><small>Questions</small></div>
+      <div class="stat"><span>30s</span><small>Per Question</small></div>
+      <div class="stat"><span>1pt</span><small>Per Correct Answer</small></div>
+    </div>
+    <button class="btn btn-primary btn-lg" id="btn-start-home">Start Quiz</button>
+  </div>
+</section>
+
+<!-- ══════════════════════════  REGISTRATION  ══════════════════════════ -->
+<section id="page-register" class="page">
+  <div class="card register-card">
+    <div class="card-icon">🎓</div>
+    <h2>Register to Play</h2>
+    <p class="muted">Enter your details to track your score</p>
+    <form id="form-register" novalidate>
+      <div class="field">
+        <label for="inp-name">Full Name</label>
+        <input id="inp-name" type="text" placeholder="e.g. Alice Johnson" autocomplete="name" required />
+        <span class="field-error" id="err-name"></span>
+      </div>
+      <div class="field">
+        <label for="inp-email">Email Address</label>
+        <input id="inp-email" type="email" placeholder="e.g. alice@example.com" autocomplete="email" required />
+        <span class="field-error" id="err-email"></span>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" id="btn-register">
+        <span id="btn-register-text">Continue to Quiz Selection →</span>
+      </button>
+      <p id="register-error" class="api-error"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ════════════════════════  QUIZ SELECTION  ═══════════════════════════ -->
+<section id="page-select" class="page">
+  <div class="container">
+    <h2 class="page-title">Choose a Quiz</h2>
+    <div id="quiz-list" class="quiz-grid"></div>
+    <p id="quiz-list-error" class="api-error"></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════  QUIZ SCREEN  ═══════════════════════════ -->
+<section id="page-quiz" class="page">
+  <div class="quiz-wrapper">
+
+    <!-- top bar -->
+    <div class="quiz-topbar">
+      <div class="quiz-meta">
+        <span id="quiz-title-bar" class="quiz-name"></span>
+        <span id="question-counter" class="counter"></span>
+      </div>
+      <div class="timer-ring-wrap" title="Time remaining">
+        <svg class="timer-ring" viewBox="0 0 44 44">
+          <circle class="ring-bg" cx="22" cy="22" r="18"/>
+          <circle class="ring-fg" id="ring-fg" cx="22" cy="22" r="18"/>
+        </svg>
+        <span id="timer-display" class="timer-number">30</span>
+      </div>
+    </div>
+
+    <!-- progress -->
+    <div class="progress-wrap">
+      <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+    </div>
+
+    <!-- question card -->
+    <div class="question-card" id="question-card">
+      <p id="question-text" class="question-text"></p>
+      <ul id="options-list" class="options-list"></ul>
+    </div>
+
+    <!-- navigation -->
+    <div class="quiz-nav">
+      <button class="btn btn-outline" id="btn-skip">Skip</button>
+      <button class="btn btn-primary" id="btn-next" disabled>Next →</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════  RESULTS PAGE  ══════════════════════════ -->
+<section id="page-results" class="page">
+  <div class="results-wrapper">
+    <div id="results-badge" class="results-badge"></div>
+    <h2 id="results-heading" class="results-heading"></h2>
+    <p id="results-feedback" class="results-feedback"></p>
+
+    <div class="score-grid">
+      <div class="score-tile"><span id="res-score">0</span><small>Score</small></div>
+      <div class="score-tile"><span id="res-total">0</span><small>Total</small></div>
+      <div class="score-tile accent"><span id="res-pct">0%</span><small>Percentage</small></div>
+      <div class="score-tile"><span id="res-correct">0</span><small>Correct</small></div>
+    </div>
+
+    <!-- per-question breakdown -->
+    <div id="breakdown-list" class="breakdown-list"></div>
+
+    <div class="results-actions">
+      <button class="btn btn-outline" id="btn-history">📋 My History</button>
+      <button class="btn btn-outline" id="btn-restart">↩ Restart Quiz</button>
+      <button class="btn btn-primary" id="btn-new-quiz">New Quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════  HISTORY PAGE  ══════════════════════════ -->
+<section id="page-history" class="page">
+  <div class="container">
+    <h2 class="page-title">Your Past Results</h2>
+    <div id="history-table-wrap"></div>
+    <div style="text-align:center;margin-top:24px">
+      <button class="btn btn-outline" id="btn-back-results">← Back to Results</button>
+      <button class="btn btn-primary" id="btn-home-from-history">🏠 Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════  TOAST NOTIFICATION  ══════════════════════ -->
+<div id="toast" class="toast" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
